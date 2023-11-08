@@ -86,3 +86,4 @@ Mesh Simplification. Standford course (CS 468-10-fall) Lecture Notes. Available 
 
 Shene, Ching-Kuang. *Mesh Simplification*. Classes notes. Michigan Technological University. Available on:
 http://www.cs.mtu.edu/~shene/COURSES/cs3621/SLIDES/Simplification.pdf
+->
