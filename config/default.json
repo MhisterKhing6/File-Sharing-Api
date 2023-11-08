@@ -1,5 +1,6 @@
 {
-    "mongodb": {
+    "test": true,
+    "mongodbConfig": {
         "host" : "localhost",
         "port" : "2701",
         "documentDeploy": "mediaHub",
@@ -9,7 +10,7 @@
         "default" : true
     },
 
-    "redis": {
+    "redisConfig": {
         "host" : "localhost",
         "port" : "6379",
         "password": "",
@@ -18,9 +19,8 @@
         "default" : true
     },
 
-    "express": {
+    "expressConfig": {
         "host": "localhost",
         "port": "30000"
     }
-
 }
