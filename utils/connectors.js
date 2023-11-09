@@ -12,7 +12,7 @@ export let mongodbConnector = () => {
     let document = test ? mongodbConfig.documentTest : mongodbConfig.documentDeploy
     let connectionString = "";
     if(mongodbConfig.password || mongodbConfig.username) {
-        connectionString = `monodb://${mongodbConfig.username}:${mongodbConfig.password}@${mongodbConfig.host}/${document}`
+        connectionString = `mongodb://${mongodbConfig.username}:${mongodbConfig.password}@${mongodbConfig.host}:${mongodbConfig.port}/${document}`
     } else {
         connectionString = `mongodb://${mongodbConfig.host}:${mongodbConfig.port}/${document}`
     }
@@ -25,10 +25,9 @@ export let mongodbConnector = () => {
 export let redisConnector= () => {
     let connectionString = "";
     if(redisConfig.password || redisConfig.username) {
-        connectionStringString = `redis://${redisConfig.username}:${redisConfig.password}@${redisConfig.host}/${redisConfig.dbNumber}`
+        connectionString = `redis://${redisConfig.username}:${redisConfig.password}@${redisConfig.host}/${redisConfig.dbNumber}`
     } else {
         connectionString = `redis://${redisConfig.host}:${redisConfig.port}`
     }
     return connectionString
 } 
-console.log(mongodbConnector())
