@@ -10,24 +10,25 @@ const test = configuration.get("test")
  */
 export let mongodbConnector = () => {
     let document = test ? mongodbConfig.documentTest : mongodbConfig.documentDeploy
-    let connection = "";
+    let connectionString = "";
     if(mongodbConfig.password || mongodbConfig.username) {
         connectionString = `monodb://${mongodbConfig.username}:${mongodbConfig.password}@${mongodbConfig.host}/${document}`
     } else {
-        connection = `mongodb://${mongodbConfig.host}:${mongodbConfig.port}/${document}`
+        connectionString = `mongodb://${mongodbConfig.host}:${mongodbConfig.port}/${document}`
     }
-    return connection
+    return connectionString
 }
 
 /**
  * redisConnector => creates connection string base on configuration to connect to the database
  */
 export let redisConnector= () => {
-    let connection = "";
+    let connectionString = "";
     if(redisConfig.password || redisConfig.username) {
-        connectionString = `redis://${redisConfig.username}:${redisConfig.password}@${redisConfig.host}/${redisConfig.dbNumber}`
+        connectionStringString = `redis://${redisConfig.username}:${redisConfig.password}@${redisConfig.host}/${redisConfig.dbNumber}`
     } else {
-        connection = `redis://${redisConfig.host}:${redisConfig.port}`
+        connectionString = `redis://${redisConfig.host}:${redisConfig.port}`
     }
-    return connection
+    return connectionString
 } 
+console.log(mongodbConnector())
