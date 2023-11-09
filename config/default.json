@@ -3,10 +3,11 @@
     "mongodbConfig": {
         "host" : "localhost",
         "port" : "27017",
-        "documentDeploy": "mediaHub",
-        "documentTest": "testMediaHub",
+        "databaseDeploy": "mediaHub",
+        "databaseTest": "testMediaHub",
         "password": "",
         "username": "",
+        "userTable": "users",
         "default" : true
     },
 

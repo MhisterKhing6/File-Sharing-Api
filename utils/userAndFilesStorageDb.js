@@ -57,7 +57,7 @@ class UserAndFilesStorage_Db {
      * @param {string} token : token to find corresponding user
      * @returns {object} : user object or null
      */
-    getUserEmail = async (token) =>{ 
+    getUserToken = async (token) =>{ 
         try {
         return await this.database.collection(this.mongodbConfig.userTable).findOne({"token": token})
         } catch(err) {

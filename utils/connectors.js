@@ -7,7 +7,7 @@ const test = configuration.get("test")
  * returns {String}: mongodb connction string
  */
 export let mongodbConnector = (mongodbConfig) => {
-    let document = test ? mongodbConfig.documentTest : mongodbConfig.documentDeploy
+    let document = test ? mongodbConfig.databaseTest : mongodbConfig.databaseDeploy
     let connectionString = "";
     if(mongodbConfig.password || mongodbConfig.username) {
         connectionString = `mongodb://${mongodbConfig.username}:${mongodbConfig.password}@${mongodbConfig.host}:${mongodbConfig.port}/${document}`

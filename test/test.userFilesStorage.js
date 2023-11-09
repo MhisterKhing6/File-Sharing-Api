@@ -1,12 +1,16 @@
 import {assert} from "chai";
 import UserFileStorage from "../utils/userAndFilesStorageDb.js";
 import { promisify } from "util";
-import { describe } from "node:test";
+import { after } from "node:test";
 let setTimeoutAsync = promisify(setTimeout)
 
-
-describe("mongodb qurying testing", () => {
+describe("tesing monodb opeartions", function(){
     
+    describe("mongodb connection", () => {
+        
+        after(async function() {
+            UserFileStorage.truncateAllUser()
+        })
         it("checks if mongodb can be connected to instance", async () => {
     
             while(!UserFileStorage.connectedToServer()) {
@@ -17,3 +21,74 @@ describe("mongodb qurying testing", () => {
             assert.isTrue(UserFileStorage.connectedToServer())
         })
     })
+
+   describe("inserting into the database", function() {
+    let testUser = {email: "test@gmail.com", password: "test_password", token:"xxxxxx", name: "test"}
+    after(async function(){
+        UserFileStorage.truncatAll()
+    })
+    it("inserting into the database", async function() {
+        let result = await UserFileStorage.addUser(testUser)
+        assert.equal(result.acknowledged, true)
+    })
+   })
+
+    describe("testing querying", function () {
+        let testUser = {email: "test@gmail.com", password: "test_password", token:"xxxxxx", name: "test"}
+        before(async function () {
+            await UserFileStorage.addUser(testUser)
+            
+        })
+        after(async function() {
+            await UserFileStorage.truncateAllUser()
+
+        })
+
+        it("search for an existed user by email", async function() {
+            let result = await UserFileStorage.getUserEmail(testUser.email)
+            assert.equal(result.email, testUser.email)
+            
+        })
+
+        it("non existed user with email", async function() {
+            let result = await UserFileStorage.getUserEmail("xxx")
+            assert.typeOf(result, "null")
+            
+        })
+        it("search for existed user by token", async function(){
+            let result = await UserFileStorage.getUserToken(testUser.token)
+            assert.equal(result.name, testUser.name)
+        })
+
+        it("non existed user token", async function() {
+            let result = await UserFileStorage.getUserToken("xxx")
+            assert.typeOf(result, "null")
+            
+        })
+    })
+
+
+    describe("testing querying", function () {
+        let testUser = {email: "test@gmail.com", password: "test_password", token:"xxxxxx", name: "test"}
+        let newPassword = "newTestPassword"
+        before(async function () {
+            await UserFileStorage.addUser(testUser)
+            
+        })
+        after(async function() {
+            await UserFileStorage.truncateAllUser()
+
+        })
+
+        it("should return a user with updated email", async function() {
+            let result = await UserFileStorage.updatePasswordEmail(testUser.email, newPassword)
+            let updateUser = await UserFileStorage.getUserEmail(testUser.email)
+            assert.notEqual(updateUser.password, testUser.password)
+            assert.equal(updateUser.password, newPassword)
+            console.log(result)
+
+        })
+
+    })
+
+})

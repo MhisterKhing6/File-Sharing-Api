@@ -3,7 +3,7 @@ import { mongodbConnector } from "../utils/connectors.js";
 
 
 describe("validate mongodb connection string", () => {
-    let mockedMonogdbTestConfig = {port: "27017", host:"localhost", documentTest:"testMediaHub", username: "", password:""}
+    let mockedMonogdbTestConfig = {port: "27017", host:"localhost", databaseTest:"testMediaHub", username: "", password:""}
     it("checks if default connections string is valid", () => {
         /**
          * has to be skipped, other configs prevent the defulat configs
