@@ -2,6 +2,7 @@ import { MongoClient } from "mongodb";
 import configs from "config"
 import { mongodbConnector } from "./connectors.js";
 import { exit } from "node:process";
+
 /* Storage class for users and files */
 class UserAndFilesStorage_Db {
     database = null
@@ -32,7 +33,6 @@ class UserAndFilesStorage_Db {
         try{
             return await this.database.collection(this.mongodbConfig.userTable).insertOne(user)
         }catch(err) {
-            this.database.close()
             console.log("error occured ", err)
             exit()
         }
@@ -82,7 +82,24 @@ class UserAndFilesStorage_Db {
         exit()
       }
     }
+    /**
+     * truncteAlluser: truncate the user table during testing
+     * @returns {bool} : true if deleted false otherwise
+     */
+    truncateAllUser = async () => {
+        try {
+            if(configs.get("test")) { 
+            await this.database.collection(this.mongodbConfig.userTable).deleteMany()
+            }
+            return true
+        } catch(err) {
+            console.log(err)
+            return false
+        }
+    }
 }
-    
+
+
 let UserFileStorage =  new UserAndFilesStorage_Db();
 export default UserFileStorage
+
