@@ -5,8 +5,8 @@
         "port" : "27017",
         "documentDeploy": "mediaHub",
         "documentTest": "testMediaHub",
-        "password": "test",
-        "username": "test",
+        "password": "",
+        "username": "",
         "default" : true
     },
 

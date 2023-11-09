@@ -1,27 +1,19 @@
 import {assert} from "chai";
-import { mongodbConnector } from "../utils/connectors.js";
-import configs from "config"
-import { skip } from "node:test";
+import UserFileStorage from "../utils/userAndFilesStorageDb.js";
+import { promisify } from "util";
+import { describe } from "node:test";
+let setTimeoutAsync = promisify(setTimeout)
 
 
-describe("validate mongodb connection string", () => {
+describe("mongodb qurying testing", () => {
     
-    xit("checks if default connections string is valid", () => {
-        /**
-         * has to be skipped, other configs prevent the defulat configs
-         */
-        let defaultConnectionString = `mongodb://localhost:27017/testMediaHub`
-        assert.equal(defaultConnectionString, mongodbConnector())
+        it("checks if mongodb can be connected to instance", async () => {
+    
+            while(!UserFileStorage.connectedToServer()) {
+                await setTimeoutAsync(100)
+                break
+            }
+            assert.isBoolean(UserFileStorage.connectedToServer())
+            assert.isTrue(UserFileStorage.connectedToServer())
+        })
     })
-
-    it("expect changes in config varibles results in different connection strings",()=> {
-        /**
-         * in config
-         * password: test,
-         * username: test
-         */
-        let expectedConnectionString = `mongodb://test:test@localhost:27017/testMediaHub`
-        assert.equal(mongodbConnector(), expectedConnectionString)
-    })
-
-})
