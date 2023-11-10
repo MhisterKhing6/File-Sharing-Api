@@ -25,7 +25,7 @@ describe("tesing monodb opeartions", function(){
    describe("inserting into the database", function() {
     let testUser = {email: "test@gmail.com", password: "test_password", token:"xxxxxx", name: "test"}
     after(async function(){
-        UserFileStorage.truncatAll()
+        UserFileStorage.truncateAllUser()
     })
     it("inserting into the database", async function() {
         let result = await UserFileStorage.addUser(testUser)
@@ -68,7 +68,7 @@ describe("tesing monodb opeartions", function(){
     })
 
 
-    describe("testing updating passwords", function () {
+    describe("testing updating password", function () {
         let testUser = {email: "test@gmail.com", password: "test_password", token:"xxxxxx", name: "test"}
         let newPassword = "newTestPassword"
         before(async function () {
