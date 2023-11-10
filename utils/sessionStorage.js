@@ -21,6 +21,8 @@ class SessionStorage {
 
     saveSessionId = async (ses_id, user_id, time=432000000) => {
         try {
+            if(!ses_id || !user_id || ses_id === " " || user_id === " ")
+                return null
             return  (await this.redisClient).set(ses_id, user_id, time)
         } catch(err) {
             console.log(err)
@@ -30,6 +32,9 @@ class SessionStorage {
 
     getUserIdbySessionId= async (ses_id) => {
         try {
+        if(!ses_id || ses_id ===" ") 
+            return null
+        
         return (await this.redisClient).get(ses_id)
         } catch(err) {
             console.log(err)
