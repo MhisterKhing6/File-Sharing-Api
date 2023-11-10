@@ -68,16 +68,14 @@ describe("tesing monodb opeartions", function(){
     })
 
 
-    describe("testing querying", function () {
+    describe("testing updating passwords", function () {
         let testUser = {email: "test@gmail.com", password: "test_password", token:"xxxxxx", name: "test"}
         let newPassword = "newTestPassword"
         before(async function () {
-            await UserFileStorage.addUser(testUser)
-            
+            await UserFileStorage.addUser(testUser)    
         })
         after(async function() {
             await UserFileStorage.truncateAllUser()
-
         })
 
         it("should return a user with updated email", async function() {
@@ -85,7 +83,6 @@ describe("tesing monodb opeartions", function(){
             let updateUser = await UserFileStorage.getUserEmail(testUser.email)
             assert.notEqual(updateUser.password, testUser.password)
             assert.equal(updateUser.password, newPassword)
-            console.log(result)
 
         })
 
