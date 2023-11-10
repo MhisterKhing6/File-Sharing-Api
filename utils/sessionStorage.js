@@ -21,7 +21,7 @@ class SessionStorage {
 
     saveSessionId = async (ses_id, user_id, time=432000000) => {
         try {
-          (await this.redisClient).set(ses_id, user_id, time)
+            return  (await this.redisClient).set(ses_id, user_id, time)
         } catch(err) {
             console.log(err)
             exit()
