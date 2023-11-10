@@ -29,7 +29,11 @@ class SessionStorage {
             exit()
         }
      }
-
+     /**
+      * getUserIdbySessionId : returns the user if of a particular session id
+      * @param {string} ses_id: the session id
+      * @returns {string}: user id associated with the session _id
+      */
     getUserIdbySessionId= async (ses_id) => {
         try {
         if(!ses_id || ses_id ===" ") 
@@ -41,6 +45,26 @@ class SessionStorage {
             exit()
         }
     }
+    /**
+     * deleteSession: delete a session key with id
+     * @param {string} ses_id: the sesion to delete id 
+     * @returns {string} : type of data deleted and number of ses id deleted
+     */
+    deleteSession = async (ses_id)  => {
+        try {
+            if(!ses_id || ses_id ===" ") 
+                return null
+            
+            return (await this.redisClient).del(ses_id)
+            } catch(err) {
+                console.log(err)
+                exit()
+            }
+    }
+    /**
+     * connectedToserver => checks if the wrapper class has successfuly connected to the redis storage
+     * @returns {bool}: true or false
+     */
 
     connectedToServer = () => this.redisClient ? true : false;
 }
