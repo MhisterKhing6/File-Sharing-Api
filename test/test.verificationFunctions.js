@@ -1,6 +1,6 @@
 import {assert} from "chai";
 import { describe } from "node:test";
-import { verifyMandatoryFields } from "../utils/verificationsFunctions.js";
+import { verifyMandatoryFields, validatePassword, validateEmail} from "../utils/verificationsFunctions.js";
 describe("test for verification functions", function() {
     describe("test for verify mandatory fields", function () {
         let itemObject = {"email": "testEmail", "password": "testPassword", "token": "testToken"}
@@ -29,6 +29,40 @@ describe("test for verification functions", function() {
                 assert.isTrue(missingFields.includes("key1"))
                 assert.isTrue(missingFields.includes("key2"))
             })
+        })
+    })
+
+    describe("password validation", function() {
+        let test_password  = "9875"
+        it("should return validated false, password less than 6 characters", function() {
+            let result = validatePassword(test_password)
+            assert.isFalse(result.validated)
+        })
+
+        it("should return validated false, no capital letter ", function() {
+            test_password = "abcdefghi"
+            let result = validatePassword(test_password)
+            assert.isFalse(result.validated)
+        })
+
+        it("should return validated false, no digit ", function() {
+            test_password = "Abcdefghi"
+            let result = validatePassword(test_password)
+            assert.isFalse(result.validated)
+        })
+
+        it("should return validated true, no digit ", function() {
+            test_password = "Abcde98ghi"
+            let result = validatePassword(test_password)
+            assert.isTrue(result.validated)
+        })
+    })
+
+    describe("validate Email", function() {
+        let email_test = "dondecency11@gmail.com"
+        it("should return wrong validation", async function(){
+            let result = await validateEmail(email_test)
+            assert.isTrue(result)
         })
     })
 })
