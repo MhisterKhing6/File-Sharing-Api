@@ -23,8 +23,8 @@ export class UserController{
             let validPwd = validatePassword(userObject.password)
             //check if any faild
             if (!validEmail  || !validPwd.validated) {
-                let errormessage = !validEmail ? "Error provid valid email,":" "
-                errormessage += !validPwd.validated ? validPwd.message : " "
+                let errormessage = !validEmail ? "provide valid email; ":""
+                errormessage += !validPwd.validated ? validPwd.reason : ""
                 res.status(400).json({status: "not created", message: errormessage})
             } else {
                 //encrypt the pasword
