@@ -3,6 +3,7 @@ import chaiHttp from "chai-http";
 import server from "../server.js";
 import UserFileStorage from "../utils/userAndFilesStorageDb.js";
 import { encryptPassword, generateToken } from "../utils/authenticationFunctions.js";
+import sessionStorage from "../utils/sessionStorage.js";
 
 chai.use(chaiHttp)
 
@@ -63,6 +64,10 @@ describe("test for authentication handlers", function() {
         chai.assert.equal(email, response.body.user.email)
         chai.assert.equal(200, response.status)
         chai.assert.isObject(response.body.user)
+        //check if ses is stored in redis
+        let sid = await sessionStorage.getUserIdbySessionId(response.body.user.sid)
+        chai.expect(response).to.have.cookie("ses_id");
+        chai.assert.isDefined(sid)        
         chai.assert.equal(response.body.status, "verified")
     })
 }) 

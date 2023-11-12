@@ -31,6 +31,7 @@ export class AuthController {
                 } else {
                     //generate a session token for the user
                     let sesToken = generateToken()
+                    res.cookie("ses_id", sesToken, {secure: true})
                     //save ses_token in redis with user id as value in sessionStorage
                     let userId = user._id.toString();
                     await sessionStorage.saveSessionId(sesToken, userId)

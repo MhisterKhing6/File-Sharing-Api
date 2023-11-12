@@ -2,15 +2,19 @@ import express from "express";
 import cors  from "cors";
 import configs from "config"
 import routes from "./views/routes.js";
+import cookieParser from "cookie-parser";
 
 
 const server = express()
 //midleware
 server.use(express.json()) //for json payload
 server.use(cors()) // for cross origin access
+server.use(cookieParser())
+
 
 //adding routes 
 server.use(routes)
+
 
 //default
 server.get("/", (req, res) => {
