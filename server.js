@@ -1,16 +1,23 @@
-/* handlse users and files storage mongodb database */
-import {MongoClient} from "mongodb"
-import { mongodbConnector } from "./utils/connectors"
-class UserAndFilesStorage {
-    dbStorage = null
-    isConnected = false
-    constructor() {
-        let connection = new MongoClient(mongodbConnector).connect()
-        connection.on("connect", () => this.isConnected = true)
-        this.dbStorage = connection.db()
-    }
+import express from "express";
+import cors  from "cors";
+import configs from "config"
 
 
-}
+const server = express()
+//midleware
+server.use(express.json()) //for json payload
+server.use(cors()) // for cross origin access
 
-export default new UserAndFilesStorage()
+//default
+server.get("/", (req, res) => {
+    res.json({status: "working"})
+})
+
+//interface
+const expressConfig = configs.get("expressConfig")
+server.listen(expressConfig.port, expressConfig.host, () => {
+    const apiInterface = `http://${expressConfig.host}:${expressConfig.port}`
+    console.log(`listening at: ${apiInterface}`)
+})
+
+export default server
