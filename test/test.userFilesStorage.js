@@ -5,7 +5,9 @@ import { after } from "node:test";
 let setTimeoutAsync = promisify(setTimeout)
 
 describe("tesing monodb opeartions", function(){
-    
+    this.afterAll(async () => {
+        await UserFileStorage.truncateAllUser()
+    })
     describe("mongodb connection", () => {
         
         after(async function() {

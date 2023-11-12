@@ -27,7 +27,7 @@ export class AuthController {
                 //check to see if passwords match(encrypted)
                 let encryptedPassfromCredentials = encryptPassword(userCredentials.password)
                 if(encryptedPassfromCredentials !== user.password) {
-                    res.status(401).json({status:"not verified" ,message:"password not correct"})
+                    res.status(400).json({status:"not verified" ,message:"password not correct"})
                 } else {
                     //generate a session token for the user
                     let sesToken = generateToken()
