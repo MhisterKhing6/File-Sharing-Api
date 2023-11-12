@@ -1,5 +1,5 @@
 /*handles user request operations */
-import { verifyMandatoryFields, validateEmail, validatePassword} from "../utils/verificationsFunctions"
+import { verifyMandatoryFields, validateEmail, validatePassword} from "../utils/verificationsFunctions.js"
 import { encryptPassword, generateToken } from "../utils/authenticationFunctions.js"
 import UserFileStorage from "../utils/userAndFilesStorageDb.js"
 export class UserController{
