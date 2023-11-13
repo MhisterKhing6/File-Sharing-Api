@@ -1,7 +1,6 @@
 import {assert} from "chai";
-import { encryptPassword } from "../utils/authenticationFunctions.js";
+import { encryptPassword,getSessionIdFromCookie,generateToken } from "../utils/authenticationFunctions.js";
 import sha1 from "sha1"
-import { describe } from "node:test";
 describe("authentication code", function(){
     
     describe("ecrypted password", function() {
@@ -12,4 +11,20 @@ describe("authentication code", function(){
             assert.equal(encryptedPwd, sha1(testPassword))
         })
     })
+
+    describe("getting session id from cookie", function () {
+        let sesIdCookie = generateToken()
+        let mockedRequest = {cookies:{"sId":sesIdCookie}}
+        it("should return test from mocked request", function () {
+            let sId = getSessionIdFromCookie(mockedRequest)
+            assert.equal(sId, sesIdCookie)
+        })
+
+        it("should return none from mocked request", function() {
+            mockedRequest.cookies.sId = undefined
+            let sId = getSessionIdFromCookie(mockedRequest)
+            assert.isUndefined(sId)
+        })
+    })
+
 })

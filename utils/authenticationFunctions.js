@@ -1,5 +1,6 @@
 import sha1 from "sha1";
 import {v4} from "uuid"
+import sessionStorage from "./sessionStorage.js";
 /**
  * Funcitons for authentication
  *   
@@ -21,4 +22,22 @@ export function encryptPassword(password) {
  */
 export function generateToken() {
     return v4()
+}
+
+ /* 
+    getCookie: returns session id cookie from a request object
+    @param {req}: a request that has the user cookie set
+    @return: cookie if set else null_otherwise
+*/
+export function getSessionIdFromCookie(req) {
+    return req.cookies.sId;
+}
+
+/** 
+getUserFromCookie : returns a user from cookie
+    *@param {ses_id} : session id to get cookie from
+    *@return :  user_id if set
+*/
+export async function getUserIdfromCookie(sId) {
+    return await sessionStorage.getUserIdbySessionId(sId)
 }
