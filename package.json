@@ -17,6 +17,7 @@
     "cors": "^2.8.5",
     "email-validator": "^2.0.4",
     "express": "^4.18.2",
+    "mime-type": "^4.0.0",
     "mongodb": "^6.2.0",
     "redis": "^4.6.10",
     "sha1": "^1.1.1",
