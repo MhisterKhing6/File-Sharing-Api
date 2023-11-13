@@ -47,7 +47,20 @@ class UserAndFilesStorage_Db {
         try {
         return await this.database.collection(this.mongodbConfig.userTable).findOne({"email": email})
     } catch(err) {
-        this.database.close()
+        console.log("error occured ", err)
+        exit()
+    }
+}   
+
+    /**
+     * getUserId : query for a user with a specific object id
+     * @param {string} userId : user object id
+     * @returns {object} : user object or null
+     */
+    getUserId = async (userId) => { 
+        try {
+        return await this.database.collection(this.mongodbConfig.userTable).findOne({"_id": userId})
+    } catch(err) {
         console.log("error occured ", err)
         exit()
     }
@@ -61,7 +74,6 @@ class UserAndFilesStorage_Db {
         try {
         return await this.database.collection(this.mongodbConfig.userTable).findOne({"token": token})
         } catch(err) {
-            this.database.close()
             console.log("error occured ", err)
             exit()
         } 
@@ -75,13 +87,13 @@ class UserAndFilesStorage_Db {
     updatePasswordEmail = async (email, newPassword)  => {
       try {
        let response = await this.database.collection(this.mongodbConfig.userTable).updateOne({"email": email}, {$set: {password: newPassword}})
-       return response.results
+       return response
       } catch(err) {
-        this.database.close()
         console.log("error occured ", err)
         exit()
       }
     }
+
     /**
      * truncteAlluser: truncate the user table during testing
      * @returns {bool} : true if deleted false otherwise
