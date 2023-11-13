@@ -21,7 +21,7 @@ export function encryptPassword(password) {
  * returns {string}: generated token
  */
 export function generateToken() {
-    return v4()
+    return v4().replace(/-/gi, '') //remove all hyphen
 }
 
  /* 
