@@ -23,5 +23,10 @@
     "expressConfig": {
         "host": "localhost",
         "port": "30000"
+    },
+
+    "fileConfig": {
+        "encoding": "base64url",
+        "folder"  : "mediaHub"
     }
 }
