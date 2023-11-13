@@ -66,7 +66,7 @@ describe("test for authentication handlers", function() {
         chai.assert.isObject(response.body.user)
         //check if ses is stored in redis
         let sid = await sessionStorage.getUserIdbySessionId(response.body.user.sid)
-        chai.expect(response).to.have.cookie("ses_id");
+        chai.expect(response).to.have.cookie("sId");
         chai.assert.isDefined(sid)        
         chai.assert.equal(response.body.status, "verified")
     })

@@ -33,11 +33,3 @@ export function getSessionIdFromCookie(req) {
     return req.cookies.sId;
 }
 
-/** 
-getUserFromCookie : returns a user from cookie
-    *@param {ses_id} : session id to get cookie from
-    *@return :  user_id if set
-*/
-export async function getUserIdfromCookie(sId) {
-    return await sessionStorage.getUserIdbySessionId(sId)
-}

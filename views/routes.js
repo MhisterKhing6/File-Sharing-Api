@@ -16,6 +16,16 @@ const routes = Router()
  */
 routes.post("/register", UserController.addUser)
 
+/**
+ * relative url: /currentuser
+ * purpose: for getting loged in user by session id in cookie
+ * method: get
+ * domain: public
+ * content-type: json
+ */
+routes.get("/currentuser", UserController.getCurrentUser)
+
+
 
 
 

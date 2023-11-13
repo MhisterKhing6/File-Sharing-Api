@@ -61,7 +61,7 @@ describe("test for verification functions", function() {
     describe("validate Email", function() {
         let email_test = "dondecency11@gmail.com"
         it("should return wrong validation", async function(){
-            let result = await validateEmail(email_test)
+            let result = validateEmail(email_test)
             assert.isTrue(result)
         })
     })

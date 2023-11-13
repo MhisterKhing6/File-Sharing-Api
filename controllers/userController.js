@@ -1,7 +1,9 @@
 /*handles user request operations */
 import { verifyMandatoryFields, validateEmail, validatePassword} from "../utils/verificationsFunctions.js"
-import { encryptPassword, generateToken } from "../utils/authenticationFunctions.js"
+import { encryptPassword, generateToken, getSessionIdFromCookie } from "../utils/authenticationFunctions.js"
 import UserFileStorage from "../utils/userAndFilesStorageDb.js"
+import sessionStorage from "../utils/sessionStorage.js"
+import { ObjectId } from "mongodb"
 export class UserController{
     /**
      * addUser : a request handler that registers usser
@@ -35,6 +37,27 @@ export class UserController{
                 let user = {name: userObject.name, password: encryptedPwd, token: userToken, email: userObject.email}
                 UserFileStorage.addUser(user)
                 res.status(200).json({status: "created"})
+            }
+        }
+    }
+    /**
+     * getCurrentUser: get the current user with specific session in the request cookie
+     * @param {object} : request object containing cookie value in header
+     * @param {object} : json response object containing user details
+     */
+    static async getCurrentUser(req, res) {
+        let sid = getSessionIdFromCookie(req)
+        if(!sid) {
+            res.status(401).json({message:"user not login"})
+        } else {
+            let userId = await sessionStorage.getUserIdbySessionId(sid)
+            if(userId) {
+                let userObjectId = new ObjectId(userId)
+                let user = await UserFileStorage.getUserId(userObjectId)
+                let userResponesDetails = {name: user.name, email: user.email, token: user.token, sid}
+                res.status(200).json({user: userResponesDetails})
+            } else {
+                res.status(401).json({message:"session expired, re login"})
             }
         }
     }

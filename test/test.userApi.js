@@ -2,6 +2,8 @@ import chai from "chai";
 import chaiHttp from "chai-http";
 import server from "../server.js";
 import UserFileStorage from "../utils/userAndFilesStorageDb.js";
+import sessionStorage from "../utils/sessionStorage.js";
+import sha1 from "sha1"
 
 chai.use(chaiHttp)
 
@@ -64,4 +66,31 @@ describe("test for  user operation handlers", function() {
         chai.assert.isObject(response.body)
         chai.assert.equal(response.body.status, "created")
     })
-}) 
+
+    describe("getting currnt login user", function () {
+        let agent = chai.request.agent(server)
+        let name = "kofi Asare"
+        let email = "test2@gmail.com"
+        let password = "testtesttess"
+        let encryptedPass = sha1(password)
+        let token = "testToken"
+ 
+     before(async function() {
+       await UserFileStorage.addUser({name, token, email, "password": encryptedPass})
+     })
+ 
+        it("check if the user is authenticated", async function() {
+         let response = await agent.post("/login").type("json").send({email, password})
+         chai.assert.equal(response.status, 200)
+         chai.expect(response).to.have.cookie("sId");
+         let sid = response.body.user.sid
+         let currentUser = await agent.get("/currentuser").set('Cookie', `sId=${sid};`)
+         chai.assert.isDefined(currentUser.body.user)
+         chai.assert.equal(currentUser.body.user.email, email)  
+        })
+        
+        after(async function () {
+         await UserFileStorage.truncateAllUser()
+        })
+    })
+})
