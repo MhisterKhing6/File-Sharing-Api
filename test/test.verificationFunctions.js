@@ -1,6 +1,6 @@
 import {assert} from "chai";
 import { describe } from "node:test";
-import { verifyMandatoryFields, validatePassword, validateEmail} from "../utils/verificationsFunctions.js";
+import { verifyMandatoryFields, validatePassword, validateEmail, validateFileParentPath} from "../utils/verificationsFunctions.js";
 describe("test for verification functions", function() {
     describe("test for verify mandatory fields", function () {
         let itemObject = {"email": "testEmail", "password": "testPassword", "token": "testToken"}
@@ -62,6 +62,39 @@ describe("test for verification functions", function() {
         let email_test = "dondecency11@gmail.com"
         it("should return wrong validation", async function(){
             let result = validateEmail(email_test)
+            assert.isTrue(result)
+        })
+    })
+
+    describe("file parent path validation", function() {
+        it("should return false since path start with relative path", async function(){
+            let path = "../../root"
+            let result = validateFileParentPath(path)
+            assert.isFalse(result)
+        })
+        it("should return false since path start with relative", async function(){
+            let path = "./filePath/Kofi"
+            let result = validateFileParentPath(path)
+            assert.isFalse(result)
+        })
+        it("should return false since path is  not a directory path", async function(){
+            let path = "../../root/k.txt"
+            let result = validateFileParentPath(path)
+            assert.isFalse(result)
+        })
+        it("should return false since path start with /", async function(){
+            let path = "/usr"
+            let result = validateFileParentPath(path)
+            assert.isFalse(result)
+        })
+        it("should return false since path is not a directory path", async function(){
+            let path = "/tse/tst/root/k.txt"
+            let result = validateFileParentPath(path)
+            assert.isFalse(result)
+        })
+        it("should return true", async function(){
+            let path = "tse/tst/root/"
+            let result = validateFileParentPath(path)
             assert.isTrue(result)
         })
     })

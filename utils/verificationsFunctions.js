@@ -35,3 +35,23 @@ export function validatePassword(passowrd) {
         return {validated: false, reason: "password must be at least 6 characters, should contain a digit and a capital letter"}
     return ({validated: true, message:"success"})
 }
+
+/**
+ * validateFileParentPath : ensure fileParent path doesnt contains relative path for security reason
+ * file parent path is directory
+ * @param {string} fileParentPath 
+ * @returns {bool} true if validated
+ */
+
+export function validateFileParentPath(fileParentPath) {
+    //should not start with .
+    //should not  conain ..
+    //should not contain .
+    //check if path is not a directory
+    //should not start with /
+    if(fileParentPath.includes(".") || fileParentPath[0] === "/") {
+        return false
+    }
+    return true
+    
+}
