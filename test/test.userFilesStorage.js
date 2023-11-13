@@ -2,6 +2,7 @@ import {assert} from "chai";
 import UserFileStorage from "../utils/userAndFilesStorageDb.js";
 import { promisify } from "util";
 import { after } from "node:test";
+import { ObjectId } from "mongodb";
 let setTimeoutAsync = promisify(setTimeout)
 
 describe("tesing monodb opeartions", function(){
@@ -51,12 +52,21 @@ describe("tesing monodb opeartions", function(){
             assert.equal(result.email, testUser.email)
             
         })
-
+        
         it("non existed user with email", async function() {
             let result = await UserFileStorage.getUserEmail("xxx")
             assert.typeOf(result, "null")
             
         })
+
+        it("search for an existed user by object id", async function() {
+            let user = await UserFileStorage.getUserEmail(testUser.email)
+            let userId = user._id.toString()
+            let secondResult = await UserFileStorage.getUserId(new ObjectId(userId))
+            assert.equal(secondResult.email, testUser.email)
+            
+        })
+
         it("search for existed user by token", async function(){
             let result = await UserFileStorage.getUserToken(testUser.token)
             assert.equal(result.name, testUser.name)
@@ -67,6 +77,8 @@ describe("tesing monodb opeartions", function(){
             assert.typeOf(result, "null")
             
         })
+
+        
     })
 
 
