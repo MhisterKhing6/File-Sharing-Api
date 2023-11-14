@@ -8,6 +8,7 @@
         "password": "",
         "username": "",
         "userTable": "users",
+        "fileTable" : "files",
         "default" : true
     },
 
