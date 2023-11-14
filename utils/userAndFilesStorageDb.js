@@ -109,6 +109,88 @@ class UserAndFilesStorage_Db {
             return false
         }
     }
+
+    /**
+     * addFile : adds a file object to the database
+     * @param {object} fileObject :  file object to add to the database
+     *  template:{token-> string: identifies the owner of the file
+     *           encodedPath -> string: identifies a file containing the encoded data of the file, 
+     *           decodedPath -> string : identifies a path to the deconded file,
+     *           mimeType -> string : specify the mime type of the file,
+     *           url -> string: identify the url for the decoded file,
+     *           userFileName -> string: identify the file name given by the user
+     *           userParentFolder -> string: identify the parent path given by the user
+     *           }
+     * @returns {object} : object Id and acknloedgment count
+     */
+    addFile = async (fileObject) => {
+        try{
+            return await this.database.collection(this.mongodbConfig.fileTable).insertOne(fileObject)
+        }catch(err) {
+            console.log("error occured ", err)
+            exit()
+        }     
+    }
+
+     /**
+     * getFileId : query for a file with a specific object id
+     * @param {string} fileId : file object id
+     * @returns {object} : file object or null
+     */
+     getFileId = async (fileId) => { 
+        try {
+        return await this.database.collection(this.mongodbConfig.fileTable).findOne({"_id": fileId})
+        } catch(err) {
+            console.log("error occured ", err)
+            exit()
+        }
+    }
+
+     /**
+     * getAllFileToken : query for all file uploaded by user with specific token
+     * @param {string} userToken : user token
+     * @returns {object} :
+     */
+     getAllFileToken = async (userToken) => { 
+        try {
+        let cursor = await this.database.collection(this.mongodbConfig.fileTable).find({"token": userToken})
+        return cursor.toArray()
+        } catch(err) {
+            console.log("error occured ", err)
+            exit()
+        }
+    }
+
+     /**
+     * getFileFileName : query for all file with specific filename
+     * @param {string} fileName : file name
+     * @returns {object} :
+     */
+     getFileFileName = async (fileName) => { 
+        try {
+        return await this.database.collection(this.mongodbConfig.fileTable).findOne({"userFileName": fileName})
+        } catch(err) {
+            console.log("error occured ", err)
+            exit()
+        }
+    }
+
+      /**
+     * truncteAllFiles: truncate all files in the filetable
+     * @returns {bool} : true if deleted false otherwise
+     */
+      truncateAllFile = async () => {
+        try {
+            if(configs.get("test")) { 
+            await this.database.collection(this.mongodbConfig.fileTable).deleteMany()
+            }
+            return true
+        } catch(err) {
+            console.log(err)
+            return false
+        }
+    }
+    
 }
 
 

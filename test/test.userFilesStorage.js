@@ -8,6 +8,7 @@ let setTimeoutAsync = promisify(setTimeout)
 describe("tesing monodb opeartions", function(){
     this.afterAll(async () => {
         await UserFileStorage.truncateAllUser()
+        await UserFileStorage.truncateAllFile()
     })
     describe("mongodb connection", () => {
         
@@ -100,6 +101,56 @@ describe("tesing monodb opeartions", function(){
 
         })
 
+    })
+    //File operation
+    describe("inserting file into the database", function() {
+        let testFile = {url:"http://localhots:port:/home.png", userFileName: "kofi.txt", userParentFolder: "user/images", token:"xxxxxx", mimeType: "image/png", encodedPath: "home.txt", decodedPath: "home.png"}
+        this.afterAll(async function(){
+            await UserFileStorage.truncateAllFile()
+        })
+        it("inserting into the database", async function() {
+            let result = await UserFileStorage.addFile(testFile)
+            assert.equal(result.acknowledged, true)
+        })
+       })
+
+       describe("testing file querying", function () {
+        let testFile = {url:"http://localhots:port:/home.png", userFileName: "test.txt", userParentFolder: "user/images", token:"xxxxxx", mimeType: "image/png", encodedPath: "home.txt", decodedPath: "home.png"}
+        let testFile2 = {url:"http://localhots:port:/home.png", userFileName: "testk.txt", userParentFolder: "user/images", token:"xxxxxx", mimeType: "image/png", encodedPath: "home.txt", decodedPath: "home.png"}
+
+        before(async function () {
+            await UserFileStorage.addFile(testFile)
+            await UserFileStorage.addFile(testFile2)
+            
+        })
+        this.afterAll(async function() {
+            await UserFileStorage.truncateAllFile()
+        })
+
+        it("search for an existing file by token", async function() {
+            let result = await UserFileStorage.getAllFileToken(testFile.token)
+            assert.equal(result[0].userFileName, testFile.userFileName)
+            assert.equal(result[1].userFileName, testFile2.userFileName)
+        })
+        
+        it("search for exited user by fileName", async function() {
+            let result = await UserFileStorage.getFileFileName(testFile.userFileName)
+            assert.equal(result.url, testFile.url)            
+        })
+
+        it("search for file by id", async function() {
+            let file = await UserFileStorage.getFileFileName(testFile.userFileName)
+            let fileId = file._id.toString()
+            let result = await UserFileStorage.getFileId(new ObjectId(fileId))
+            assert.equal(result.token, testFile.token)
+            
+        })
+
+        it("search for non existed file by token", async function(){
+            let result = await UserFileStorage.getAllFileToken("token")
+            assert.equal(0, result.length)
+        })
+        
     })
 
 })

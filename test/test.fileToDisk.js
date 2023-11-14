@@ -25,12 +25,10 @@ describe("writing file to disk", function() {
             let decodedContent = await readFileAsync(result.decodedPath)
             assert.equal(decodedContent, testContent)
         })
-        this.after(function () {
             this.afterAll(async function () {
                 await FileToDisk.deleteFile(result.encodedPath)
                 await FileToDisk.deleteFile(result.decodedPath)
             })
-        })
     })
 
     describe("writing files to a disk operations", function() {
@@ -42,7 +40,12 @@ describe("writing file to disk", function() {
         let testFile = new FileToDisk("test.txt", data, "path/path1/", token )
         it("should sucesfull save file with", async function(){
             result = await testFile.writeDatatoDisk()
-            
+            assert.isTrue(existsSync(result.encodedPath))
+            assert.isTrue(existsSync(result.decodedPath))
+            await FileToDisk.deleteFile(result.decodedPath)
+            await FileToDisk.deleteFile(result.encodedPath)
+            assert.isFalse(existsSync(result.decodedPath))
+            assert.isFalse(existsSync(result.encodedPath))
         })
     })
 })
