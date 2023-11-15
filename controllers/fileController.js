@@ -137,7 +137,6 @@ export class FileController {
                 res.status(401).json({"message": "token not valid, register for valid token or check your token is correct"})
             }
         }
+
     }
-
-
 }

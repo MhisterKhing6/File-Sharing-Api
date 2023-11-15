@@ -1,5 +1,5 @@
 {
-    "test": true,
+    "test": false,
     "mongodbConfig": {
         "host" : "localhost",
         "port" : "27017",
@@ -27,7 +27,7 @@
     },
 
     "fileConfig": {
-        "encoding": "base64url",
+        "encoding": "base64",
         "folder"  : "filestorage"
     }
 }
