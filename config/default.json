@@ -28,6 +28,6 @@
 
     "fileConfig": {
         "encoding": "base64url",
-        "folder"  : "mediaHub"
+        "folder"  : "filestorage"
     }
 }

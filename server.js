@@ -3,7 +3,7 @@ import cors  from "cors";
 import configs from "config"
 import routes from "./views/routes.js";
 import cookieParser from "cookie-parser";
-let fileCofig = configs.get("fileConfig")
+let fileConfig = configs.get("fileConfig")
 
 const server = express()
 //midleware
@@ -12,7 +12,9 @@ server.use(cors()) // for cross origin access
 server.use(cookieParser())
 
 //static path to handle file url
-server.use(fileCofig.get("folder"), express.static(fileCofig.get("folder")))
+const staticPath = fileConfig.get("folder")
+server.use(`/${staticPath}`, express.static(staticPath))
+
 //adding routes 
 server.use(routes)
 
