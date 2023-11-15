@@ -93,5 +93,48 @@ export class FileController {
             }
     }
 
+    /**
+     * fileDetails : get the details of a file
+     * @param {object} req : json payload respons object containing file id and token
+     * @param {download} res : object containing file details
+     */
+    static async fileDetails(req, res) {
+        let fileDetails = req.body
+        //check for required fields
+        let requiredFields= ["fileId", "token"]
+        let missingFields = verifyMandatoryFields(requiredFields, fileDetails)
+        if(missingFields.length !== 0) {
+            res.status(400).json({message: "required fileds missing", missingFields, requiredFields})
+        } else {
+            //check user exist
+            let token = fileDetails.token
+            let user =  await UserFileStorage.getUserToken(token)
+            if(user) {
+                //check if file exist
+                let fileObjectid = new ObjectId(fileDetails.fileId)
+                let file = await UserFileStorage.getFileId(fileObjectid)
+                //check if file exit
+                if(!file) {
+                    res.status(400).json({"error": "file does not exit, check fileId"})
+                } else {
+                    //check if file belong to user
+                    if(file.token !== user.token) {
+                        res.status(401).json({"message": "user does not own file."})
+                    } else {
+                        //genrate url
+                        let downloadUrl = generateDownloadUrl(fileDetails.token, fileDetails.fileId)
+                        res.status(200).json({token: fileDetails.token,
+                                            fileId: fileDetails.fileId, 
+                                            downloadUrl, url: file.url, 
+                                            fileName: file.userFileName, 
+                                            parentFolder:file.userParentFolder})
+                    }
+                }
+            } else {
+                res.status(401).json({"message": "token not valid, register for valid token or check your token is correct"})
+            }
+        }
+    }
+
 
 }
