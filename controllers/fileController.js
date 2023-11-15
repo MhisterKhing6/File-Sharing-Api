@@ -1,7 +1,9 @@
 import UserFileStorage from "../utils/userAndFilesStorageDb.js";
 import { verifyMandatoryFields, validateFileParentPath, validateFileName } from "../utils/verificationsFunctions.js";
 import FileToDisk from "../utils/fileToDisk.js";
-import { getFileUrl } from "../utils/fileFunctions.js";
+import { generateDownloadUrl, getFileUrl } from "../utils/fileFunctions.js";
+import { ObjectId } from "mongodb";
+import { response } from "express";
 /**
  * api controller for file operations
  */
@@ -63,4 +65,33 @@ export class FileController {
         }
 
     }
+
+    
+    static async downloadFile(req, res) {
+        //get user token and fileId from params
+        let token = req.params.token
+        let fileId = req.params.fileId
+        //check user exist
+            let user =  await UserFileStorage.getUserToken(token)
+            if(user) {
+                //check if file exist
+                let fileObjectid = new ObjectId(fileId)
+                let file = await UserFileStorage.getFileId(fileObjectid)
+                //check if file exit
+                if(!file) {
+                    res.status(400).json({"error": "file does not exit, check fileId"})
+                } else {
+                    //check if file belong to user
+                    if(file.token !== user.token) {
+                        res.status(401).json({"message": "user does not own file."})
+                    } else {
+                        res.download(file.decodedPath)
+                    }
+                }
+            } else {
+                res.status(401).json({"message": "token not valid, register for valid token or check your token is correct"})
+            }
+    }
+
+
 }

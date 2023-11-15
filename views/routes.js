@@ -37,6 +37,16 @@ routes.get("/currentuser", UserController.getCurrentUser)
  */
 routes.post("/uploadfile", FileController.uploadFile)
 
+/**
+ * relative url: /downloadfile/:token/:fileId
+ * purpose: use for downloading file
+ * method: get
+ * domain : public
+ * content-type: json
+ */
+
+routes.get("/downloadfile/:token/:fileId", FileController.downloadFile)
+
 
 //Authentications operation interfaces
 
