@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "mocha  --exit",
-    "start": "sudo service mongod start; sudo service redis-server start; node  server.js"
+    "start": "sudo service mongod start; node  server.js"
   },
   "author": "",
   "license": "ISC",

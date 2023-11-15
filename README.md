@@ -1,29 +1,33 @@
 
 
 
-# Media Hub
+# File Storage and Sharing
 
 
 ## Description 
 <hr />
 
-A simple file storage api that generate url for files and hence gives online access to files and enable file sharing.
+A simple file storage api that generate url for files and hence gives online access to files and enable file sharing. It also provide download url that makes file sharing easy. The project can handles all file uploads including images, videos, pds, document and generate sharable and downloadable url.
 The project was buile using node eviroment and hance makes it easy for deployment.
 This apps makes it easy for:
   - online access
   - file sharing
+  
 
 
 ## Intallation
 <hr />
-<!--
 
-I have used Ubuntu 14.04 for the project. For other versions the instructions should be similar (check [OpenGL Tutorial](http://www.opengl-tutorial.org/) for other distributions or operating systems).
+
 
 ### Dependencies
 
-- Install the latest drivers
-- Install all needed compilers, tools & libs:
+- Node  v20
+- Latest mongo db database
+- Lates redis storage
+#### Install Dependencies
+  Node v20 
+   <a href"https://nodejs.org/en/download">Kofi</a>
 
 ``` $ sudo apt-get install cmake make g++ libx11-dev libxi-dev libgl1-mesa-dev libglu1-mesa-dev libxrandr-dev libxext-dev libxi-dev ```
 
