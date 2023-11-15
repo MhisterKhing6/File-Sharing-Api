@@ -98,7 +98,7 @@ export class FileController {
      * @param {object} req : json payload respons object containing file id and token
      * @param {download} res : object containing file details
      */
-    static async fileDetails(req, res) {
+    static async fileDetail(req, res) {
         let fileDetails = req.body
         //check for required fields
         let requiredFields= ["fileId", "token"]
@@ -123,11 +123,14 @@ export class FileController {
                     } else {
                         //genrate url
                         let downloadUrl = generateDownloadUrl(fileDetails.token, fileDetails.fileId)
-                        res.status(200).json({token: fileDetails.token,
+                        res.status(200).json(
+                                        {   token: fileDetails.token,
                                             fileId: fileDetails.fileId, 
                                             downloadUrl, url: file.url, 
                                             fileName: file.userFileName, 
-                                            parentFolder:file.userParentFolder})
+                                            parentFolder:file.userParentFolder,
+                                            mimeType: file.mimeType
+                                        })
                     }
                 }
             } else {

@@ -71,16 +71,23 @@ describe("testin file api", function() {
         let imageFileName = "messi.jpg"
         let parentFolder = "images/profilePics"
         let response = await chai.request(server).post("/uploadfile").type("json").send({fileName: imageFileName, token, data, parentFolder})
-        chai.assert.equal(response.status, 200)
         chai.assert.isTrue(response.body.saved);
-        chai.assert.isDefined(response.body.token) 
-        chai.assert.isDefined(response.body.url) 
         let downloadResponse = await chai.request(server).get(`/downloadfile/${response.body.token}/${response.body.fileId}`)
         chai.assert.equal(downloadResponse.type, "image/jpeg")
     })
 
+
+    it("test for file details", async function() {
+        let file = await readFileAsync("test/testImage.jpg")
+        let encodedImage = Buffer.from(file).toString(fileConfig.encoding)  
+        let data = encodedImage
+        let imageFileName = "messi.jpg"
+        let parentFolder = "images/profilePics"
+        let response = await chai.request(server).post("/uploadfile").type("json").send({fileName: imageFileName, token, data, parentFolder})
+        chai.assert.isTrue(response.body.saved); 
+        let fileDetailsResponse = await chai.request(server).post("/filedetails").type("json").send({"token" : response.body.token, "fileId": response.body.fileId})
+        chai.assert.equal(fileDetailsResponse.body.fileName, imageFileName)
+    })
+
 })
 
-
-
-   

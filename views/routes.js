@@ -47,6 +47,16 @@ routes.post("/uploadfile", FileController.uploadFile)
 
 routes.get("/downloadfile/:token/:fileId", FileController.downloadFile)
 
+/**
+ * relative url: /filedetails
+ * purpose: returns the details of a file
+ * method: post
+ * domain : public
+ * content-type: json
+ */
+
+routes.post("/filedetails", FileController.fileDetail)
+
 
 //Authentications operation interfaces
 
