@@ -62,9 +62,21 @@ describe("testin file api", function() {
         chai.assert.isTrue(response.body.saved);
         chai.assert.isDefined(response.body.token) 
         chai.assert.isDefined(response.body.url) 
-        //check if url can be accessible 
-        let urlResponse = await chai.request(server).get(response.body.url)
-        console.log(urlResponse)
+    })
+
+    it("should send file a downladable with correct type", async function() {
+        let file = await readFileAsync("test/testImage.jpg")
+        let encodedImage = Buffer.from(file).toString(fileConfig.encoding)  
+        let data = encodedImage
+        let imageFileName = "messi.jpg"
+        let parentFolder = "images/profilePics"
+        let response = await chai.request(server).post("/uploadfile").type("json").send({fileName: imageFileName, token, data, parentFolder})
+        chai.assert.equal(response.status, 200)
+        chai.assert.isTrue(response.body.saved);
+        chai.assert.isDefined(response.body.token) 
+        chai.assert.isDefined(response.body.url) 
+        let downloadResponse = await chai.request(server).get(`/downloadfile/${response.body.token}/${response.body.fileId}`)
+        chai.assert.equal(downloadResponse.type, "image/jpeg")
     })
 
 })
