@@ -4,6 +4,8 @@ import server from "../server.js";
 import UserFileStorage from "../utils/userAndFilesStorageDb.js";
 import sessionStorage from "../utils/sessionStorage.js";
 import sha1 from "sha1"
+import { describe } from "node:test";
+import { generateToken } from "../utils/authenticationFunctions.js";
 
 chai.use(chaiHttp)
 
@@ -91,6 +93,25 @@ describe("test for  user operation handlers", function() {
         
         after(async function () {
          await UserFileStorage.truncateAllUser()
+        })
+    })
+
+    describe("getting user details", function () {
+        let agent = chai.request.agent(server)
+        let name = "kofi Asare"
+        let email = "test2@gmail.com"
+        let password = "testtesttess"
+        let encryptedPass = sha1(password)
+        let token = generateToken()
+ 
+     before(async function() {
+       await UserFileStorage.addUser({name, token, email, "password": encryptedPass})
+     })
+        
+     it("should give the details of the user", async function() {
+         let response = await chai.request(server).post("/userdetails").type("json").send({token})   
+         chai.assert.equal(response.body.email, email)
+         chai.assert.equal(response.body.fileCount, 0)
         })
     })
 })
