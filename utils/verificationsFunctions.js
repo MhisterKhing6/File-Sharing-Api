@@ -1,5 +1,6 @@
 /** helper functions for verifications */
 import emailValidator from "email-validator"
+import path from "path"
 /**
  * verifymandatoryFields -> checks if an objects contains all the  required fields or keys 
  * @param {array} requiredFields : fields or keys required for objects
@@ -53,5 +54,13 @@ export function validateFileParentPath(fileParentPath) {
         return false
     }
     return true
-    
+}
+
+/**
+ * validateFileName : check filename has extension
+ * @param {string} fileName : fileName
+ * @returns bool 
+ */
+export function validateFileName(fileName) {
+    return path.extname(fileName) ? true : false
 }
