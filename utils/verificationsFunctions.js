@@ -62,5 +62,8 @@ export function validateFileParentPath(fileParentPath) {
  * @returns bool 
  */
 export function validateFileName(fileName) {
-    return path.extname(fileName) ? true : false
+    return path.extname(fileName) && !fileName.endsWith(".") ? true : false
 }
+
+
+console.log(validateFileName("kofi.t"))
