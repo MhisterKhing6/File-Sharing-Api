@@ -2,6 +2,7 @@
 import { Router } from "express";
 import { UserController} from "../controllers/userController.js";
 import { AuthController } from "../controllers/authenticationController.js";
+import { FileController } from "../controllers/fileController.js";
 
 const routes = Router()
 
@@ -26,7 +27,15 @@ routes.post("/register", UserController.addUser)
 routes.get("/currentuser", UserController.getCurrentUser)
 
 
-
+//file operation interface
+/**
+ * relative url: /uploadfile
+ * purpose: for uploading file
+ * method: post
+ * domain: public
+ * content-type: json
+ */
+routes.post("/uploadfile", FileController.uploadFile)
 
 
 //Authentications operation interfaces
