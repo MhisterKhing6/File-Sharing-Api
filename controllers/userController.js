@@ -61,4 +61,32 @@ export class UserController{
             }
         }
     }
+
+    /**
+     * userDetails : get the details of a user wtith a particular email
+     * @param {object} req : json payload respons object containing file id and token
+     * @param {download} res : object containing file details
+     */
+    static async userDetails(req, res) {
+        let fileDetails = req.body
+        //check for required fields
+        let requiredFields= ["token"]
+        let missingFields = verifyMandatoryFields(requiredFields, fileDetails)
+        if(missingFields.length !== 0) {
+            res.status(400).json({message: "required fileds missing", missingFields, requiredFields})
+        } else {
+            //check user exist
+            let token = fileDetails.token
+            let user =  await UserFileStorage.getUserToken(token)
+            if(user) {
+                //check if file exist
+                let userFiles = UserFileStorage.getAllFileToken(token)
+                res.status(200).json({userName: user.name, email: user.email, token: user.token, fileCount: userFiles.length})
+            } else {
+                res.status(401).json({"message": "token not valid, register for valid token or check your token is correct"})
+            }
+        }
+    }
+
+
 }

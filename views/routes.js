@@ -26,6 +26,15 @@ routes.post("/register", UserController.addUser)
  */
 routes.get("/currentuser", UserController.getCurrentUser)
 
+/**
+ * relative url: /userdetails
+ * purpose: get user details
+ * method: post
+ * domain: public
+ * content-type: json
+ */
+routes.post("/userdetails", UserController.userDetails)
+
 
 //file operation interface
 /**
