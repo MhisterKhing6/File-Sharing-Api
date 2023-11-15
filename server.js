@@ -7,7 +7,7 @@ let fileConfig = configs.get("fileConfig")
 
 const server = express()
 //midleware
-server.use(express.json()) //for json payload
+server.use(express.json({limit: "200mb"})) //for json payload
 server.use(cors()) // for cross origin access
 server.use(cookieParser())
 
@@ -21,7 +21,7 @@ server.use(routes)
 
 //default
 server.get("/", (req, res) => {
-    res.json({status: "working"})
+    res.json({"status": "working"})
 })
 
 //web server interface
