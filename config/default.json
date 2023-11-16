@@ -3,13 +3,12 @@
     "mongodbConfig": {
         "host" : "localhost",
         "port" : "27017",
-        "databaseDeploy": "mediaHub",
-        "databaseTest": "testMediaHub",
+        "databaseDeploy": "fileStorage",
+        "databaseTest": "testFileStorage",
         "password": "",
         "username": "",
         "userTable": "users",
-        "fileTable" : "files",
-        "default" : true
+        "fileTable" : "files"
     },
 
     "redisConfig": {
@@ -17,8 +16,7 @@
         "port" : "6379",
         "password": "",
         "username": "",
-        "dbNumber": 0,
-        "default" : true
+        "dbNumber": 0
     },
 
     "expressConfig": {
